@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 310" width="100%" height="100%" style="background: transparent;">
+  <defs>
+    <marker id="arrow-flow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#4aa8ff" />
+    </marker>
+    <marker id="arrow-out" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#ffb347" />
+    </marker>
+  </defs>
+
+  <style>
+    .box-head { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .box-title { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 700; fill: #ffffff; }
+    .box-desc { font-family: 'Inter', sans-serif; font-size: 17px; fill: #dbeafe; }
+    .box-tag { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; fill: #ffd66b; }
+  </style>
+
+  <!-- Fundo Geral -->
+  <rect x="10" y="10" width="920" height="290" rx="16" fill="#060b1cdd" stroke="#ffffff22" stroke-width="2" />
+
+  <!-- Bloco 1: Entrada (Espectrograma / MFCCs) -->
+  <g transform="translate(28, 35)">
+    <rect x="0" y="0" width="195" height="240" rx="14" fill="#0b152e" stroke="#4aa8ff" stroke-width="2.5" />
+    <text x="97" y="40" text-anchor="middle" class="box-head" fill="#4aa8ff">1. Entrada</text>
+    <text x="97" y="75" text-anchor="middle" class="box-title">Som em Imagem</text>
+    <text x="97" y="115" text-anchor="middle" class="box-desc">Espectrograma</text>
+    <text x="97" y="142" text-anchor="middle" class="box-desc">Mel / MFCCs</text>
+    <rect x="20" y="175" width="155" height="42" rx="8" fill="#050a18" stroke="#4aa8ff66" />
+    <text x="97" y="201" text-anchor="middle" class="box-tag">Extraído no Librosa</text>
+  </g>
+
+  <!-- Seta 1 -> 2 -->
+  <path d="M 228 155 L 260 155" stroke="#4aa8ff" stroke-width="4" fill="none" marker-end="url(#arrow-flow)" />
+
+  <!-- Bloco 2: CNN (Lupa Visual) -->
+  <g transform="translate(266, 35)">
+    <rect x="0" y="0" width="205" height="240" rx="14" fill="#0b1b36" stroke="#4aa8ff" stroke-width="2.5" />
+    <text x="102" y="40" text-anchor="middle" class="box-head" fill="#4aa8ff">2. Rede CNN</text>
+    <text x="102" y="75" text-anchor="middle" class="box-title">Olha como Imagem</text>
+    <text x="102" y="115" text-anchor="middle" class="box-desc">Usa filtros como</text>
+    <text x="102" y="142" text-anchor="middle" class="box-desc">uma "lupa" no som</text>
+    <rect x="18" y="175" width="169" height="42" rx="8" fill="#050a18" stroke="#4aa8ff66" />
+    <text x="102" y="201" text-anchor="middle" class="box-tag">Aprende o Timbre</text>
+  </g>
+
+  <!-- Seta 2 -> 3 -->
+  <path d="M 476 155 L 508 155" stroke="#4aa8ff" stroke-width="4" fill="none" marker-end="url(#arrow-flow)" />
+
+  <!-- Bloco 3: RNN / GRU (Memória no Tempo) -->
+  <g transform="translate(514, 35)">
+    <rect x="0" y="0" width="205" height="240" rx="14" fill="#07221c" stroke="#9be7d8" stroke-width="2.5" />
+    <text x="102" y="40" text-anchor="middle" class="box-head" fill="#9be7d8">3. Rede RNN / GRU</text>
+    <text x="102" y="75" text-anchor="middle" class="box-title">Linha do Tempo</text>
+    <text x="102" y="115" text-anchor="middle" class="box-desc">Tem "memória" do</text>
+    <text x="102" y="142" text-anchor="middle" class="box-desc">que veio antes</text>
+    <rect x="18" y="175" width="169" height="42" rx="8" fill="#04120e" stroke="#9be7d866" />
+    <text x="102" y="201" text-anchor="middle" class="box-tag" fill="#9be7d8">Aprende a Sequência</text>
+  </g>
+
+  <!-- Seta 3 -> 4 -->
+  <path d="M 724 155 L 756 155" stroke="#ffb347" stroke-width="4" fill="none" marker-end="url(#arrow-out)" />
+
+  <!-- Bloco 4: Saída (Comparação da Voz) -->
+  <g transform="translate(762, 35)">
+    <rect x="0" y="0" width="150" height="240" rx="14" fill="#1c1406" stroke="#ffb347" stroke-width="3" />
+    <text x="75" y="40" text-anchor="middle" class="box-head" fill="#ffb347">4. Saída</text>
+    <text x="75" y="75" text-anchor="middle" class="box-title" fill="#ffd66b">Nota Final</text>
+    <text x="75" y="118" text-anchor="middle" class="box-desc">Compara com</text>
+    <text x="75" y="145" text-anchor="middle" class="box-desc">o meme real</text>
+    <rect x="15" y="175" width="120" height="42" rx="8" fill="#0f0a02" stroke="#ffb34788" />
+    <text x="75" y="201" text-anchor="middle" class="box-tag">0 a 100 pts</text>
+  </g>
+</svg>

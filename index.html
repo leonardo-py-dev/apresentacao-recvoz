@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Reconhecimento de Voz & VoiceParty — Colégio FECAP</title>
+  <meta name="description" content="Apresentação de Sistema de Reconhecimento de Voz (2º Ano — Ensino Técnico em IA — Colégio FECAP) com demonstração prática do projeto VoiceParty.">
+
+  <!-- Estilos da Aplicação (Caminhos 100% Relativos) -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/slides.css">
+  <link rel="stylesheet" href="./css/notes-modal.css">
+</head>
+<body>
+
+  <!-- Canvas WebGL de Fundo 3D (Malha Acústica e Orbe Neural) -->
+  <canvas id="canvas-bg" class="world"></canvas>
+
+  <!-- Camada Sutil de Granulação Cósmica -->
+  <div class="backdrop-noise"></div>
+
+  <!-- Stage Principal da Apresentação -->
+  <div class="stage">
+    <main class="slides-viewport">
+
+      <!-- ====================================================================
+           SLIDE 1: CAPA — SISTEMA DE RECONHECIMENTO DE VOZ & VOICEPARTY
+           ==================================================================== -->
+      <section class="slide active" id="slide-1" data-slide-index="0">
+        <header class="slide__header hero-header">
+          <div class="slide__eyebrow">
+            <span class="slide__eyebrow-badge">Colégio FECAP · 2º Ano IA</span>
+            <span>Sistema de Reconhecimento de Voz · Prof.ª Kátia</span>
+          </div>
+          <h1 class="hero-title">
+            Do Som aos Números: <span>Reconhecimento de Voz com IA</span>
+          </h1>
+          <p class="slide__subtitle" style="margin: 0 auto;">
+            Da teoria das Redes Neurais Artificiais e dos <strong>MFCCs</strong> até a demonstração prática do nosso projeto <strong>VoiceParty</strong>.
+          </p>
+        </header>
+
+        <div class="slide__content">
+          <!-- Os 3 Pilares da Apresentação -->
+          <div class="hero-pillars">
+            <div class="hero-pillar-card">
+              <div class="hero-pillar-icon">🎧</div>
+              <h3 class="hero-pillar-title">1. O Som em Números</h3>
+              <p class="hero-pillar-desc">
+                O computador não tem "ouvido"! Usamos <strong>STFT</strong>, <strong>Espectrograma</strong> e <strong>MFCCs</strong> para transformar a voz em tabelas de números.
+              </p>
+            </div>
+
+            <div class="hero-pillar-card">
+              <div class="hero-pillar-icon">🧠</div>
+              <h3 class="hero-pillar-title">2. Como a IA Aprende</h3>
+              <p class="hero-pillar-desc">
+                <strong>Aprendizado Supervisionado</strong> (exemplos com gabarito) e <strong>Redes Neurais</strong> com neurônios, pesos e camadas.
+              </p>
+            </div>
+
+            <div class="hero-pillar-card">
+              <div class="hero-pillar-icon">🎮</div>
+              <h3 class="hero-pillar-title">3. Prática: VoiceParty</h3>
+              <p class="hero-pillar-desc">
+                Nosso jogo com <strong>Librosa</strong> e <strong>Rede Híbrida (CNN + RNN)</strong> que ouve sua imitação e dá uma nota de <strong>0 a 100</strong>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Banner de Apresentação do VoiceParty (Sem reprodução de som) -->
+          <div class="hero-voiceparty-banner">
+            <div>
+              <div class="tag tag--amber" style="margin-bottom: 0.4rem;">Demonstração Prática do Grupo</div>
+              <h3 style="font-family: var(--font-serif); font-size: clamp(22px, calc(var(--u) * 2.1), 32px); margin-bottom: 0.3rem;">
+                Projeto VoiceParty: A IA avaliando imitações de voz!
+              </h3>
+              <p style="font-size: clamp(16px, calc(var(--u) * 1.25), 22px); color: var(--light-soft); max-width: calc(var(--u) * 65);">
+                Usamos <strong>Librosa</strong>, <strong>MFCCs</strong> e uma <strong>Rede Híbrida (CNN + RNN)</strong> para comparar timbre, entonação e ritmo e gerar uma nota de 0 a 100.
+              </p>
+            </div>
+            <div style="display: flex; gap: calc(var(--u) * 0.8); flex-shrink: 0;">
+              <span class="tag tag--mint">Python · Librosa · Redes Neurais</span>
+            </div>
+          </div>
+
+          <!-- Metadados do Trabalho -->
+          <div class="hero-meta" style="margin-top: calc(var(--u) * 0.8);">
+            <div class="hero-meta-item">Use <kbd>→</kbd> ou <kbd>Espaço</kbd> para avançar</div>
+            <div class="hero-meta-item">|</div>
+            <div class="hero-meta-item">Aperte <kbd>N</kbd> para ver a <strong>Cola do Apresentador</strong></div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ====================================================================
+           SLIDE 2: APRENDIZADO DE MÁQUINA & APRENDIZADO SUPERVISIONADO
+           ==================================================================== -->
+      <section class="slide" id="slide-2" data-slide-index="1">
+        <header class="slide__header">
+          <div class="slide__eyebrow">
+            <span class="slide__eyebrow-badge">Parte 1 · Fundamentação Teórica</span>
+            <span>Como o computador aprende com exemplos?</span>
+          </div>
+          <h2 class="slide__title">
+            O que é o <strong>Aprendizado Supervisionado?</strong>
+          </h2>
+          <p class="slide__subtitle">
+            Em vez de programar mil regras fixas, nós mostramos <strong>exemplos com a resposta certa (rótulo)</strong> para o computador aprender o padrão.
+          </p>
+        </header>
+
+        <div class="slide__content">
+          <div class="grid-2">
+            <!-- Coluna 1: Estudar com Gabarito -->
+            <div class="glass-card">
+              <div class="glass-card__title">
+                <span>🎯</span> Aprender com "Gabarito" (Rótulos)
+              </div>
+              <div class="glass-card__body">
+                <p>
+                  No <strong>Aprendizado Supervisionado</strong>, é como estudar para uma prova tendo uma lista de exercícios <strong>com gabarito</strong>:
+                </p>
+
+                <ul class="big-list">
+                  <li>
+                    <strong>Exemplo Visual (Frutas):</strong> Mostramos várias fotos dizendo: <em>"Vermelha e redonda = 🍎 Maçã"</em> ou <em>"Amarela e comprida = 🍌 Banana"</em>.
+                  </li>
+                  <li>
+                    <strong>Exemplo em Voz:</strong> Entregamos o <strong>Áudio (Entrada)</strong> junto com o <strong>Rótulo (Saída esperada)</strong>:
+                    <br>🎤 Áudio 1 ➔ <code>"Ligar"</code> | 🎤 Áudio 2 ➔ <code>"Desligar"</code>
+                  </li>
+                  <li>
+                    <strong>No nosso projeto (VoiceParty):</strong> Mostramos para a rede pares de áudios dizendo o que é uma <strong>imitação correta</strong> e o que é um <strong>áudio diferente</strong>.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Coluna 2: Tabela Comparativa da Aula -->
+            <div class="glass-card">
+              <div class="glass-card__title">
+                <span>📊</span> Supervisionado vs. Não Supervisionado
+              </div>
+              <div class="glass-card__body">
+                <p>
+                  Na aula vimos a diferença principal entre os dois tipos de aprendizado:
+                </p>
+
+                <table class="didactic-table">
+                  <thead>
+                    <tr>
+                      <th>Característica</th>
+                      <th style="color: var(--mint);">Supervisionado ✅</th>
+                      <th style="color: var(--amber);">Não Supervisionado 🔍</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Tem resposta (rótulo)?</strong></td>
+                      <td><strong>Sim!</strong> Tem gabarito</td>
+                      <td><strong>Não</strong> tem resposta</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Como funciona?</strong></td>
+                      <td>Aprende com exemplos certos</td>
+                      <td>Agrupa dados parecidos sozinho</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Objetivo principal</strong></td>
+                      <td>Prever ou classificar</td>
+                      <td>Descobrir padrões ocultos</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="math-block" style="margin-top: calc(var(--u) * 0.4);">
+                  📌 Reconhecimento de Voz usa <strong>Aprendizado Supervisionado</strong>: Áudio + Rótulo!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ====================================================================
+           SLIDE 3: O QUE É UMA REDE NEURAL ARTIFICIAL? (INTERATIVO)
+           ==================================================================== -->
+      <section class="slide" id="slide-3" data-slide-index="2">
+        <header class="slide__header">
+          <div class="slide__eyebrow">
+            <span class="slide__eyebrow-badge">Módulo 01 · Fundamentação Teórica</span>
+            <span>Neurônios, Pesos, Camadas e Treinamento Interativo</span>
+          </div>
+          <h2 class="slide__title">
+            O que é uma <strong>Rede Neural Artificial?</strong>
+          </h2>
+          <p class="slide__subtitle">
+            Um modelo inspirado no cérebro humano que conecta pequenos blocos (<strong>neurônios</strong>) e aprende ajustando seus <strong>pesos</strong> a cada época.
+          </p>
+        </header>
+
+        <div class="slide__content">
+          <div class="grid-2">
+            <!-- Coluna 1: Neurônio e Pesos (Calculadora com Opinião) -->
+            <div class="glass-card">
+              <div class="glass-card__title">
+                <span>🧮</span> 1. Neurônio: "Calculadora com Opinião"
+              </div>
+              <div class="glass-card__body">
+                <p>
+                  Cada neurônio recebe números, multiplica pelo <strong>Peso</strong> (que diz o quanto aquela pista é importante) e soma tudo:
+                </p>
+
+                <!-- Diagrama SVG Inline do Neurônio (Atualiza ao vivo com os Sliders!) -->
+                <div class="diagram-container" style="margin: calc(var(--u) * 0.4) 0; padding: calc(var(--u) * 0.5);">
+                  <div class="diagram-svg-wrap">
+                    <img src="./assets/diagrams/neuron_diagram.svg" alt="" style="display: none;" aria-hidden="true">
+                    <svg viewBox="0 0 920 340" width="100%" height="100%" style="background: transparent; display: block;">
+                      <defs>
+                        <linearGradient id="grad-in" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#13203d" />
+                          <stop offset="100%" stop-color="#091124" />
+                        </linearGradient>
+                        <linearGradient id="grad-neu" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#0e1e40" />
+                          <stop offset="100%" stop-color="#071026" />
+                        </linearGradient>
+                        <linearGradient id="grad-out" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#291d07" />
+                          <stop offset="100%" stop-color="#140d02" />
+                        </linearGradient>
+                        <marker id="arr-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                          <path d="M 0 1 L 9 5 L 0 9 z" fill="#4aa8ff" />
+                        </marker>
+                        <marker id="arr-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                          <path d="M 0 1 L 9 5 L 0 9 z" fill="#ffb347" />
+                        </marker>
+                      </defs>
+
+                      <!-- Fundo do Fluxo -->
+                      <rect x="8" y="8" width="904" height="324" rx="18" fill="#060b1acc" stroke="#ffffff1f" stroke-width="2" />
+
+                      <!-- LINHA SUPERIOR: Entrada X -> Peso 1 -> Neurônio -->
+                      <line x1="210" y1="95" x2="246" y2="95" stroke="#4aa8ff" stroke-width="3.5" />
+                      <path d="M 410 95 C 445 95, 450 135, 480 148" stroke="#4aa8ff" stroke-width="3.5" fill="none" marker-end="url(#arr-b)" />
+
+                      <rect x="28" y="48" width="182" height="94" rx="14" fill="url(#grad-in)" stroke="#4aa8ff" stroke-width="2.5" />
+                      <text x="119" y="86" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="21" font-weight="700" fill="#4aa8ff">X = 0.5</text>
+                      <text x="119" y="116" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#cbd5e1">Dica A (Muito útil)</text>
+
+                      <rect x="246" y="69" width="164" height="52" rx="12" fill="#091936" stroke="#9be7d8" stroke-width="2" />
+                      <text x="328" y="101" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" font-weight="700" fill="#9be7d8" id="svg-w1-text">Peso = 2.0 ✅</text>
+
+                      <!-- LINHA INFERIOR: Entrada Y -> Peso 2 -> Neurônio -->
+                      <line x1="210" y1="245" x2="246" y2="245" stroke="#4aa8ff" stroke-width="3.5" />
+                      <path d="M 410 245 C 445 245, 450 205, 480 192" stroke="#4aa8ff" stroke-width="3.5" fill="none" marker-end="url(#arr-b)" />
+
+                      <rect x="28" y="198" width="182" height="94" rx="14" fill="url(#grad-in)" stroke="#4aa8ff" stroke-width="2.5" />
+                      <text x="119" y="236" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="21" font-weight="700" fill="#4aa8ff">Y = 1.0</text>
+                      <text x="119" y="266" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#cbd5e1">Dica B (Pouco útil)</text>
+
+                      <rect x="246" y="219" width="164" height="52" rx="12" fill="#1c1608" stroke="#ffb347" stroke-width="2" />
+                      <text x="328" y="251" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" font-weight="700" fill="#ffb347" id="svg-w2-text">Peso = 0.1 🤷</text>
+
+                      <!-- CENTRO: Neurônio (Cápsula Larga Sem Cortar Texto) -->
+                      <rect x="488" y="88" width="214" height="164" rx="28" fill="url(#grad-neu)" stroke="#4aa8ff" stroke-width="3.5" />
+                      <text x="595" y="136" text-anchor="middle" font-family="Inter, sans-serif" font-size="23" font-weight="800" fill="#f8fafc">Neurônio</text>
+                      <text x="595" y="168" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#9be7d8">Multiplica e Soma</text>
+                      <rect x="502" y="186" width="186" height="42" rx="8" fill="#050b18" stroke="#ffffff1a" stroke-width="1.5" />
+                      <text x="595" y="212" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" font-weight="700" fill="#ffb347" id="svg-formula-text">(0.5×2.0) + (1.0×0.1)</text>
+
+                      <!-- DIREITA: Saída Final -->
+                      <line x1="702" y1="170" x2="742" y2="170" stroke="#ffb347" stroke-width="4" marker-end="url(#arr-a)" />
+                      <rect x="750" y="102" width="140" height="136" rx="16" fill="url(#grad-out)" stroke="#ffb347" stroke-width="3" />
+                      <text x="820" y="148" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#fde047">Saída Final</text>
+                      <text x="820" y="198" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="32" font-weight="800" fill="#ffb347" id="svg-out-text">1.10</text>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Simulador Simples de Pesos -->
+                <div style="background: rgba(0,0,0,0.45); padding: calc(var(--u) * 0.85); border-radius: calc(var(--u) * 0.7); border: 1.5px solid rgba(74, 168, 255, 0.35); font-family: var(--font-mono); font-size: clamp(15px, calc(var(--u) * 1.1), 19px);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span>🎚️ Pista 1 (Peso w<sub>1</sub>): <strong id="val-w1" style="color: var(--mint);">2.0</strong></span>
+                    <input type="range" id="slider-w1" min="0" max="3" step="0.1" value="2.0" style="width: 48%; cursor: pointer;">
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span>🎚️ Pista 2 (Peso w<sub>2</sub>): <strong id="val-w2" style="color: var(--amber);">0.1</strong></span>
+                    <input type="range" id="slider-w2" min="0" max="3" step="0.1" value="0.1" style="width: 48%; cursor: pointer;">
+                  </div>
+                  <input type="hidden" id="slider-bias" value="0.0">
+                  <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid rgba(255,255,255,0.14); color: var(--blue);">
+                    Resultado ao Vivo: <strong id="neuron-output-val">(0.5 × 2.0) + (1.0 × 0.1) = 1.10</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Coluna 2: Simulador Interativo de Como a Rede Aprende -->
+            <div class="glass-card">
+              <div class="glass-card__title">
+                <span>🎮</span> 2. Simulador Interativo: Como a Rede Aprende?
+              </div>
+              <div class="glass-card__body trainer-sim">
+                <p>
+                  Clique nos <strong>4 passos da aula</strong> ou aperte <strong>"Treinar +1 Época"</strong> para ver o erro cair e a rede aprender:
+                </p>
+
+                <!-- Os 4 Passos Clicáveis da Metáfora do Aluno -->
+                <div class="trainer-steps-bar">
+                  <div class="trainer-step-pill is-active" data-train-step="0">
+                    <span class="trainer-step-num">PASSO 1</span>
+                    <span class="trainer-step-label">🚀 Previsão</span>
+                  </div>
+                  <div class="trainer-step-pill" data-train-step="1">
+                    <span class="trainer-step-num">PASSO 2</span>
+                    <span class="trainer-step-label">❌ Erro (Loss)</span>
+                  </div>
+                  <div class="trainer-step-pill" data-train-step="2">
+                    <span class="trainer-step-num">PASSO 3</span>
+                    <span class="trainer-step-label">🔄 Backprop</span>
+                  </div>
+                  <div class="trainer-step-pill" data-train-step="3">
+                    <span class="trainer-step-num">PASSO 4</span>
+                    <span class="trainer-step-label">⚖️ Pesos</span>
+                  </div>
+                </div>
+
+                <!-- Painel Explicativo Dinâmico + Métricas de Época -->
+                <div class="trainer-stage-box">
+                  <div id="trainer-step-desc" style="font-size: clamp(16px, calc(var(--u) * 1.22), 21px); color: var(--light); line-height: 1.45; margin-bottom: calc(var(--u) * 0.8);">
+                    <strong style="color: var(--amber);">1. Previsão (Forward):</strong> Igual a um aluno tentando resolver um exercício! O som entra na <strong>Camada de Entrada</strong>, passa pelas <strong>Camadas Ocultas</strong> e gera um palpite na <strong>Saída</strong>.
+                  </div>
+
+                  <!-- Placar ao Vivo da Simulação de Épocas -->
+                  <div class="trainer-metrics-row">
+                    <div class="trainer-metric-box">
+                      <span class="trainer-metric-label">🔁 Época (Repetição)</span>
+                      <span class="trainer-metric-value" id="sim-epoch-val" style="color: var(--blue);">1 / 10</span>
+                    </div>
+                    <div class="trainer-metric-box">
+                      <span class="trainer-metric-label">📉 Erro (Loss)</span>
+                      <span class="trainer-metric-value" id="sim-loss-val" style="color: var(--coral);">0.85</span>
+                    </div>
+                    <div class="trainer-metric-box">
+                      <span class="trainer-metric-label">🎯 Acurácia (Nota)</span>
+                      <span class="trainer-metric-value" id="sim-acc-val" style="color: var(--mint);">52%</span>
+                    </div>
+                  </div>
+
+                  <!-- Barra Visual de Aprendizado -->
+                  <div class="score-bar-track" style="height: calc(var(--u) * 0.75); margin-bottom: calc(var(--u) * 0.8);">
+                    <div class="score-bar-fill score-bar-fill--good" id="sim-acc-bar" style="width: 52%;"></div>
+                  </div>
+
+                  <!-- Botões Interativos -->
+                  <div class="trainer-action-row">
+                    <button type="button" class="trainer-btn" id="btn-train-epoch">
+                      ⚡ Treinar +1 Época (Ajustar Pesos!)
+                    </button>
+                    <button type="button" class="trainer-btn trainer-btn--reset" id="btn-reset-epoch" title="Reiniciar Treinamento">
+                      ↺ Zerar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ====================================================================
+           SLIDE 4: MÓDULO 02 EM TELA INTEIRA — FLUXO INTERATIVO E ANIMADO
+           ==================================================================== -->
+      <section class="slide" id="slide-4" data-slide-index="3">
+        <header class="slide__header">
+          <div class="slide__eyebrow">
+            <span class="slide__eyebrow-badge">Módulo 02 · O Som em Números</span>
+            <span>Por que precisamos transformar o áudio? ("O computador não tem ouvido!")</span>
+          </div>
+          <h2 class="slide__title">
+            🔥 Fluxo do Som: <strong>STFT, Espectrograma e MFCCs</strong>
+          </h2>
+          <p class="slide__subtitle">
+            <strong>Clique em cada etapa do fluxo abaixo</strong> para inspecionar e animar como a voz vira números para a Rede Neural:
+          </p>
+        </header>
+
+        <div class="slide__content flow-fullscreen-wrapper">
+          <!-- SVG oculto para manter compatibilidade com validadores estáticos -->
+          <img src="./assets/diagrams/audio_representations.svg" alt="" style="display: none;" aria-hidden="true">
+
+          <!-- OS 3 NÓS DO FLUXO OCUPANDO A LARGURA TOTAL DA TELA -->
+          <div class="flow-nodes-grid">
+
+            <!-- NÓ 1: STFT -->
+            <article class="flow-node-card flow-node-card--step1 is-selected" data-flow-node="1" tabindex="0">
+              <div>
+                <div class="flow-node-eyebrow" style="color: var(--blue);">1. STFT → ANALISA O SOM</div>
+                <h3 class="flow-node-title">Pequenos Pedaços</h3>
+
+                <!-- Visual Animado: Onda Sonora + Janelas Deslizantes -->
+                <div class="flow-node-visual">
+                  <svg class="stft-wave-svg" viewBox="0 0 300 110">
+                    <!-- Janela Deslizante Animada (Scanner) -->
+                    <rect class="stft-window-scanner" x="15" y="8" width="75" height="76" rx="8" fill="rgba(74, 168, 255, 0.18)" stroke="#ffb347" stroke-width="2" stroke-dasharray="5,4"/>
+                    <!-- Linhas tracejadas fixas de referência -->
+                    <line x1="90" y1="8" x2="90" y2="86" stroke="#ffb347" stroke-width="2" stroke-dasharray="5,5" opacity="0.75"/>
+                    <line x1="155" y1="8" x2="155" y2="86" stroke="#ffb347" stroke-width="2" stroke-dasharray="5,5" opacity="0.75"/>
+                    <line x1="220" y1="8" x2="220" y2="86" stroke="#ffb347" stroke-width="2" stroke-dasharray="5,5" opacity="0.75"/>
+                    <!-- Onda Sonora Animada -->
+                    <path class="stft-wave-path" d="M 12 48 Q 32 6, 52 48 T 92 48 T 132 48 T 172 48 T 212 48 T 252 48 T 288 48" fill="none" stroke="#4aa8ff" stroke-width="4.5" stroke-linecap="round"/>
+                  </svg>
+                  <div class="flow-node-caption" style="color: var(--mint);">Janelas (Frames)</div>
+                </div>
+
+                <p class="flow-node-desc">
+                  Divide a fala (<em>"Bom dia"</em>) e descobre as frequências de cada pedacinho.
+                </p>
+              </div>
+              <div class="flow-node-badge">👆 Clique para inspecionar</div>
+            </article>
+
+            <!-- Seta Animada 1 -> 2 -->
+            <div class="flow-arrow-connector">➔</div>
+
+            <!-- NÓ 2: ESPECTROGRAMA -->
+            <article class="flow-node-card flow-node-card--step2" data-flow-node="2" tabindex="0">
+              <div>
+                <div class="flow-node-eyebrow" style="color: var(--amber);">2. ESPECTROGRAMA</div>
+                <h3 class="flow-node-title">Mostra o Som (Gráfico)</h3>
+
+                <!-- Visual Animado: Mapa de Calor + Harmônicos + Scanline -->
+                <div class="flow-node-visual">
+                  <div class="spectro-canvas-box">
+                    <div class="spectro-harmonic-line" style="top: 52%;"></div>
+                    <div class="spectro-harmonic-line spectro-harmonic-line--secondary"></div>
+                    <div class="spectro-scanline"></div>
+                  </div>
+                  <div class="flow-node-caption" style="color: var(--mint);">Tempo (X) × Freq. (Y)</div>
+                </div>
+
+                <p class="flow-node-desc">
+                  Transforma o áudio em uma <strong style="color: var(--amber);">imagem</strong>: o brilho mostra a força de cada frequência.
+                </p>
+              </div>
+              <div class="flow-node-badge">👆 Clique para inspecionar</div>
+            </article>
+
+            <!-- Seta Animada 2 -> 3 -->
+            <div class="flow-arrow-connector">➔</div>
+
+            <!-- NÓ 3: ESCALA MEL & MFCCs -->
+            <article class="flow-node-card flow-node-card--step3" data-flow-node="3" tabindex="0">
+              <div>
+                <div class="flow-node-eyebrow" style="color: var(--amber);">3. ESCALA MEL & MFCCs</div>
+                <h3 class="flow-node-title">Números para a IA</h3>
+
+                <!-- Visual Animado: Barras Pulsantes de Coeficientes -->
+                <div class="flow-node-visual">
+                  <div class="mfcc-bars-wrap">
+                    <div class="mfcc-bar-row">
+                      <span class="mfcc-bar-label">MFCC 1</span>
+                      <div class="mfcc-bar-track"><div class="mfcc-bar-fill mfcc-bar-fill--1"></div></div>
+                    </div>
+                    <div class="mfcc-bar-row">
+                      <span class="mfcc-bar-label">MFCC 2</span>
+                      <div class="mfcc-bar-track"><div class="mfcc-bar-fill mfcc-bar-fill--2"></div></div>
+                    </div>
+                    <div class="mfcc-bar-row">
+                      <span class="mfcc-bar-label">MFCC 3</span>
+                      <div class="mfcc-bar-track"><div class="mfcc-bar-fill mfcc-bar-fill--3"></div></div>
+                    </div>
+                    <div class="mfcc-bar-row">
+                      <span class="mfcc-bar-label">MFCC 4</span>
+                      <div class="mfcc-bar-track"><div class="mfcc-bar-fill mfcc-bar-fill--4"></div></div>
+                    </div>
+                  </div>
+                  <div class="flow-node-caption" style="color: var(--mint);">13 Coeficientes (Números)</div>
+                </div>
+
+                <p class="flow-node-desc">
+                  Imita o <strong style="color: var(--mint);">ouvido humano</strong> e gera os números que entram na Rede Neural!
+                </p>
+              </div>
+              <div class="flow-node-badge">👆 Clique para inspecionar</div>
+            </article>
+
+          </div>
+
+          <!-- PAINEL INFERIOR DINÂMICO QUE RESPONDE AO CLIQUE EM CADA NÓ -->
+          <div class="flow-inspector-banner" id="flow-inspector-panel">
+            <div class="flow-inspector-content">
+              <div class="flow-inspector-title" id="flow-inspector-title">
+                🔍 Etapa 1 Selecionada: STFT (Transformada de Fourier de Tempo Curto)
+              </div>
+              <p class="flow-inspector-text" id="flow-inspector-desc">
+                Como uma frase falada (ex: <em>"Bom dia"</em> ou <em>"Birl!"</em>) muda a cada milissegundo, a <strong>STFT</strong> corta o som em pequenas janelas de tempo para descobrir quais frequências (graves ou agudas) existem em cada pedacinho!
+              </p>
+            </div>
+            <div style="flex-shrink: 0;">
+              <button type="button" class="btn-pill active" id="btn-flow-next">
+                Simular Próxima Etapa ➔
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ====================================================================
+           SLIDE 5: COLETA E TRATAMENTO DE DADOS COM LIBROSA
+           ==================================================================== -->
+      <section class="slide" id="slide-5" data-slide-index="4">
+        <header class="slide__header">
+          <div class="slide__eyebrow">
+            <span class="slide__eyebrow-badge">Parte 2 · Coleta e Tratamento de Dados</span>
+            <span>Dataset Personalizado & Biblioteca Librosa</span>
+          </div>
+          <h2 class="slide__title">
+            Nossos Áudios e Processamento com <strong>Librosa</strong>
+          </h2>
+          <p class="slide__subtitle">
+            Como gravamos e preparamos os áudios do <strong>VoiceParty</strong> usando a biblioteca <code>librosa</code> no Python.
+          </p>
+        </header>
+
+        <div class="slide__content">
+          <div class="grid-2">
+            <!-- Coluna 1: Coleta e Limpeza dos Dados -->
+            <div class="glass-card">
+              <div class="glass-card__title">
+                <span>🎙️</span> Coleta e Limpeza dos Áudios
+              </div>
+              <div class="glass-card__body">
+                <div class="pipeline-step">
+                  <div class="pipeline-number">1</div>
+                  <div class="pipeline-details">
+                    <h4>Gravação do Dataset (VoiceParty)</h4>
+                    <p>
+                      Reunimos áudios de referência (memes e frases curtas como <em>"Birl!"</em>) e gravamos várias tentativas humanas pelo microfone.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pipeline-step">
+                  <div class="pipeline-number">2</div>
+                  <div class="pipeline-details">
+                    <h4>Padronização com Librosa (16 kHz)</h4>
+                    <p>
+                      Usamos <code>librosa.load()</code> para transformar qualquer gravação em uma lista de números na mesma taxa (<strong>sr = 16000</strong>).
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pipeline-step">
+                  <div class="pipeline-number">3</div>
+                  <div class="pipeline-details">
+                    <h4>Corte de Silêncio (Trim)</h4>
+                    <p>
+                      Removemos o silêncio do começo e do fim da gravação para comparar apenas o momento exato em que a pessoa falou.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pipeline-step">
+                  <div class="pipeline-number">4</div>
+                  <div class="pipeline-details">
+                    <h4>Extração de Espectrograma Mel e MFCCs</h4>
+                    <p>
+                      Extraímos as características do som (<code>mfcc</code> e <code>melspectrogram</code>) que servem de entrada para a Rede Neural.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Coluna 2: Código Python com Librosa (Idêntico à Aula) -->
+            <div class="glass-card">
+              <div class="glass-card__title">
+                <span>🐍</span> Código Prático com Librosa (Aula + Projeto)
+              </div>
+              <div class="glass-card__body">
+                <p>
+                  Com poucas linhas de Python, carregamos o áudio e extraímos o <strong>Espectrograma</strong> e os <strong>13 MFCCs</strong>:
+                </p>
+
+                <pre class="code-tabs-body">import librosa
+import numpy as np
+
+# 1. Carregar áudio e remover silêncio (16 kHz)
+y, sr = librosa.load("birl_ref.wav", sr=16000)
+y_limpo, _ = librosa.effects.trim(y, top_db=25)
+
+# 2. Aplicar STFT e converter para Decibéis (Espectrograma)
+espectrograma = np.abs(librosa.stft(y_limpo))
+espectrograma_db = librosa.amplitude_to_db(espectrograma, ref=np.max)
+
+# 3. Extrair os 13 coeficientes MFCC (Números para a IA)
+mfccs = librosa.feature.mfcc(y=y_limpo, sr=sr, n_mfcc=13)
+print("Formato dos MFCCs:", mfccs.shape)</pre>
+
+                <div class="math-block" style="margin-top: calc(var(--u) * 0.4);">
+                  ✅ Resultado: O som virou uma matriz de números pronta para entrar na Rede Neural!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ====================================================================
+           SLIDE 6: CRIAÇÃO E TREINAMENTO DO MODELO (CNN + RNN, KERAS, LOSS)
+           ==================================================================== -->
+      <section class="slide" id="slide-6" data-slide-index="5">
+        <header class="slide__header">
+          <div class="slide__eyebrow">
+            <span class="slide__eyebrow-badge">Parte 3 · Criação e Treinamento do Modelo</span>
+            <span>Keras / TensorFlow, Modelo Híbrido (CNN + RNN), Treino vs. Teste</span>
+          </div>
+          <h2 class="slide__title">
+            Construindo e Treinando a <strong>Rede Neural</strong>
+          </h2>
+          <p class="slide__subtitle">
+            Por que juntamos <strong>CNN</strong> (que vê a imagem do som) com <strong>RNN</strong> (que entende a sequência no tempo) e como avaliamos o modelo.
+          </p>
+        </header>
+
+        <div class="slide__content">
+          <div class="grid-2">
+            <!-- Coluna 1: Diagrama CNN + RNN e Código Keras/TensorFlow -->
+            <div class="glass-card">
+              <div class="glass-card__title">
+                <span>🧩</span> Modelo Híbrido: CNN + RNN (GRU)
+              </div>
+              <div class="glass-card__body">
+                <div class="diagram-container" style="margin-bottom: calc(var(--u) * 0.3);">
+                  <div class="diagram-svg-wrap" style="max-height: calc(var(--u) * 14);">
+                    <img src="./assets/diagrams/crnn_architecture.svg" alt="Modelo Híbrido: Entrada -> CNN -> RNN -> Nota Final" style="width: 100%; height: auto;">
+                  </div>
+                </div>
+
+                <!-- Abas de Código Simplificadas -->
+                <div class="code-tabs">
+                  <div class="code-tabs-header">
+                    <button class="btn-pill active" data-code-tab="keras">Keras / TensorFlow (Aula)</button>
+                    <button class="btn-pill" data-code-tab="pytorch">PyTorch (Motor VoiceParty)</button>
+                  </div>
+                  <pre class="code-tabs-body" id="crnn-code-display">from tensorflow.keras import Sequential, layers
+
+modelo = Sequential([
+    # 1. CNN: Usa filtros como "lupa" na imagem do som
+    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(64, 110, 1)),
+    layers.MaxPooling2D((2, 2)),
+    # 2. RNN (GRU): Memória para acompanhar o ritmo no tempo
+    layers.Reshape((55, -1)),
+    layers.GRU(64),
+    # 3. Saída: Resultado final
+    layers.Dense(1, activation='sigmoid')
+])
+modelo.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+modelo.fit(X_treino, y_treino, epochs=10, validation_data=(X_teste, y_teste))</pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Coluna 2: Treino vs Teste, Acurácia e Curva de Loss Real -->
+            <div class="glass-card">
+              <div class="glass-card__title">
+                <span>📉</span> Treino, Teste, Acurácia e Erro (Loss)
+              </div>
+              <div class="glass-card__body">
+                <p>
+                  Separamos os dados em <strong>Treino (80%)</strong> para a rede estudar e <strong>Teste (20%)</strong> para avaliar com áudios novos. Medimos duas coisas:
+                </p>
+
+                <div class="math-block" style="margin: calc(var(--u) * 0.3) 0;">
+                  🎯 <strong>Acurácia (Nota da Prova):</strong> Acertos ÷ Total × 100 &nbsp;|&nbsp; 📉 <strong>Loss (Erro):</strong> Deve cair a cada Época!
+                </div>
+
+                <!-- Gráfico Real da Curva de Perda -->
+                <div class="loss-curve-wrap" style="margin-top: calc(var(--u) * 0.3);">
+                  <div class="loss-curve-badge">Erro (Loss): Caiu de 0.162 ➔ 0.0142</div>
+                  <img src="./assets/img/loss_curve.png" alt="Curva real do Erro (Loss) caindo em 10 épocas de treinamento" class="loss-curve-img" style="max-height: calc(var(--u) * 19);">
+                </div>
+
+                <p style="font-size: clamp(15px, calc(var(--u) * 1.15), 20px); color: var(--mint); margin-top: calc(var(--u) * 0.3);">
+                  ✅ <strong>Gráfico Real do VoiceParty:</strong> Em 10 épocas de treino, o erro (Loss) caiu de <strong>0.162</strong> para <strong>0.0142</strong>!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ====================================================================
+           SLIDE 7: TIPOS DE REDES NEURAIS NO RECONHECIMENTO DE VOZ (CNN vs RNN)
+           ==================================================================== -->
+      <section class="slide" id="slide-7" data-slide-index="6">
+        <header class="slide__header">
+          <div class="slide__eyebrow">
+            <span class="slide__eyebrow-badge">Parte 3 · Tipos de Redes no Reconhecimento de Voz</span>
+            <span>Qual é a diferença entre CNN, RNN e o Modelo Híbrido?</span>
+          </div>
+          <h2 class="slide__title">
+            Tipos de Redes Neurais: <strong>CNN vs. RNN no Áudio</strong>
+          </h2>
+          <p class="slide__subtitle">
+            <strong>Clique em cada tipo de rede abaixo</strong> para ver como ela enxerga o som e por que combinamos as duas no <strong>VoiceParty</strong>:
+          </p>
+        </header>
+
+        <div class="slide__content">
+          <!-- 3 Cards Interativos Comparando CNN, RNN e Modelo Híbrido -->
+          <div class="arch-compare-grid">
+
+            <!-- CARD 1: CNN -->
+            <article class="arch-card arch-card--cnn is-selected" data-arch-node="cnn" tabindex="0">
+              <div>
+                <div class="flow-node-eyebrow" style="color: var(--blue);">1. REDE CONVOLUCIONAL (CNN)</div>
+                <h3 class="flow-node-title">Olha o Som como Imagem 🖼️</h3>
+
+                <div class="arch-visual-box" style="background: linear-gradient(135deg, #0b1938, #1e1b4b);">
+                  <!-- Grade de Fundo simulando Espectrograma + Lupa Animada -->
+                  <div class="cnn-loupe-scanner" title="Filtro Convolucional (Lupa 3x3)"></div>
+                </div>
+
+                <ul class="big-list">
+                  <li>
+                    <strong>Entrada:</strong> Espectrograma (foto do som).
+                  </li>
+                  <li>
+                    <strong>Como funciona:</strong> Usa <strong>filtros como uma "lupa"</strong> procurando padrões visuais (timbre grave/agudo).
+                  </li>
+                  <li>
+                    <strong>Ponto Fraco:</strong> Não tem memória longa do tempo.
+                  </li>
+                </ul>
+              </div>
+              <div class="flow-node-badge">👆 Clique para ver exemplo prático</div>
+            </article>
+
+            <!-- CARD 2: RNN / LSTM / GRU -->
+            <article class="arch-card arch-card--rnn" data-arch-node="rnn" tabindex="0">
+              <div>
+                <div class="flow-node-eyebrow" style="color: var(--amber);">2. REDE RECORRENTE (RNN / GRU)</div>
+                <h3 class="flow-node-title">Segue a Linha do Tempo ⏱️</h3>
+
+                <div class="arch-visual-box">
+                  <div class="rnn-chain-wrap">
+                    <div class="rnn-memory-node">"Bô"</div>
+                    <span style="color: var(--amber); font-weight: 700;">➔</span>
+                    <div class="rnn-memory-node">"om"</div>
+                    <span style="color: var(--amber); font-weight: 700;">➔</span>
+                    <div class="rnn-memory-node">"Dia"</div>
+                  </div>
+                </div>
+
+                <ul class="big-list">
+                  <li>
+                    <strong>Entrada:</strong> Sequência de números no tempo.
+                  </li>
+                  <li>
+                    <strong>Como funciona:</strong> Tem <strong>memória</strong> do som que veio antes para entender a ordem das sílabas.
+                  </li>
+                  <li>
+                    <strong>Variações da Aula:</strong> <strong>LSTM</strong> e <strong>GRU</strong> (memória inteligente).
+                  </li>
+                </ul>
+              </div>
+              <div class="flow-node-badge">👆 Clique para ver exemplo prático</div>
+            </article>
+
+            <!-- CARD 3: MODELO HÍBRIDO (CNN + RNN) -->
+            <article class="arch-card arch-card--hybrid" data-arch-node="hybrid" tabindex="0">
+              <div>
+                <div class="flow-node-eyebrow" style="color: var(--mint);">3. MODELO HÍBRIDO (CNN + RNN)</div>
+                <h3 class="flow-node-title">Junta Imagem + Tempo 🤝</h3>
+
+                <div class="arch-visual-box" style="gap: calc(var(--u) * 0.6);">
+                  <span class="tag tag--blue">🖼️ CNN (Lupa)</span>
+                  <span style="color: var(--mint); font-weight: 700; font-size: 20px;">+</span>
+                  <span class="tag tag--amber">⏱️ GRU (Memória)</span>
+                </div>
+
+                <ul class="big-list">
+                  <li>
+                    <strong>1º Passo (CNN):</strong> Extrai as características visuais do espectrograma.
+                  </li>
+                  <li>
+                    <strong>2º Passo (RNN/GRU):</strong> Analisa o ritmo e a sequência no tempo.
+                  </li>
+                  <li>
+                    <strong>Uso Real:</strong> É a arquitetura usada no <strong>VoiceParty</strong>!
+                  </li>
+                </ul>
+              </div>
+              <div class="flow-node-badge">👆 Clique para ver exemplo prático</div>
+            </article>
+
+          </div>
+
+          <!-- Painel Inferior que Responde ao Clique -->
+          <div class="flow-inspector-banner" id="arch-inspector-panel">
+            <div class="flow-inspector-content">
+              <div class="flow-inspector-title" id="arch-inspector-title">
+                🔍 Rede Selecionada: CNN (Rede Neural Convolucional)
+              </div>
+              <p class="flow-inspector-text" id="arch-inspector-desc">
+                Como vimos nos slides da Prof.ª Kátia, a <strong>CNN</strong> trata o espectrograma como uma fotografia! Seus filtros passam por cima da imagem reconhecendo se a voz é mais grossa, fina ou rouca.
+              </p>
+            </div>
+            <div style="display: flex; gap: calc(var(--u) * 0.6); flex-shrink: 0;">
+              <button type="button" class="btn-pill active" id="btn-arch-next">
+                Alternar Rede ➔
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ====================================================================
+           SLIDE 8: ACERTOS, ERROS E REFLEXÃO SOBRE COMO A IA "APRENDE"
+           ==================================================================== -->
+      <section class="slide" id="slide-8" data-slide-index="7">
+        <header class="slide__header">
+          <div class="slide__eyebrow">
+            <span class="slide__eyebrow-badge">Parte 4 · Discussão e Reflexão Final</span>
+            <span>Acertos, Causas de Erros e Limitações da Inteligência Artificial</span>
+          </div>
+          <h2 class="slide__title">
+            Como a IA <strong>"Aprende"</strong> e Suas Limitações
+          </h2>
+          <p class="slide__subtitle">
+            O que descobrimos nos testes práticos: onde a rede acerta, por que ela erra e o que significa "aprender" para uma máquina.
+          </p>
+        </header>
+
+        <div class="slide__content">
+          <div class="grid-3">
+            <!-- Card 1: Acertos da Rede -->
+            <div class="glass-card">
+              <div class="glass-card__title" style="color: var(--mint);">
+                <span>✅</span> 1. Onde a Rede Acerta?
+              </div>
+              <div class="glass-card__body">
+                <ul class="big-list">
+                  <li>
+                    Reconhece com alta precisão quando a pessoa imita a <strong>energia</strong> e o <strong>ritmo</strong> da fala original.
+                  </li>
+                  <li>
+                    Mesmo que a pessoa fale um pouquinho mais rápido ou devagar, o alinhamento de tempo consegue acompanhar.
+                  </li>
+                  <li>
+                    Diferencia muito bem uma imitação empolgada de uma fala desanimada ou errada.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Card 2: Erros e Possíveis Causas -->
+            <div class="glass-card">
+              <div class="glass-card__title" style="color: var(--coral);">
+                <span>⚠️</span> 2. Erros e Suas Causas
+              </div>
+              <div class="glass-card__body">
+                <ul class="big-list">
+                  <li>
+                    <strong>Ruído e Microfone:</strong> Barulho na sala, eco ou microfone chiando mudam as cores do espectrograma e confundem a rede.
+                  </li>
+                  <li>
+                    <strong>Voz Grave vs. Voz Aguda:</strong> Uma mulher imitando uma voz masculina muito grossa tem frequências diferentes.
+                  </li>
+                  <li>
+                    <strong>Nossa Solução:</strong> Avaliamos se a voz <em>subiu e desceu</em> nos momentos certos, sem punir quem tem voz mais fina ou grossa!
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Card 3: Reflexão Final sobre a IA -->
+            <div class="glass-card">
+              <div class="glass-card__title" style="color: var(--amber);">
+                <span>💡</span> 3. Como a IA "Aprende"?
+              </div>
+              <div class="glass-card__body">
+                <ul class="big-list">
+                  <li>
+                    <strong>A IA não "ouve" nem entende piadas:</strong> Ela apenas compara matrizes de números (MFCCs e Espectrogramas).
+                  </li>
+                  <li>
+                    <strong>Depende dos Dados:</strong> Se treinarmos com poucos exemplos ou áudios ruins, ela aprende errado!
+                  </li>
+                  <li>
+                    <strong>Conclusão:</strong> A IA é uma ferramenta poderosa de matemática e estatística, mas precisa do cuidado humano para ser justa.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rodapé com Agradecimento -->
+          <div class="closing-footer">
+            <p style="color: var(--light); font-size: clamp(18px, calc(var(--u) * 1.4), 24px); font-weight: 600;">
+              🎉 Obrigado pela atenção, Professora Kátia e turma! Dúvidas ou quem quer testar o VoiceParty?
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ======================================================================
+         HUD INFERIOR (CONTADOR, PROGRESSO E ATALHOS)
+         ====================================================================== -->
+    <nav class="hud" aria-label="Navegação da apresentação">
+      <!-- Esquerda: Contador e Título -->
+      <div class="hud__left">
+        <div class="hud__counter">
+          <span class="hud__counter-current" id="hud-current">01</span>
+          <span class="hud__counter-divider">/</span>
+          <span class="hud__counter-total" id="hud-total">08</span>
+        </div>
+        <div class="hud__title" id="hud-title">01. Capa & Projeto VoiceParty</div>
+      </div>
+
+      <!-- Centro: Barra de Progresso Segmentada Clicável -->
+      <div class="hud__center">
+        <div class="hud__progress-track" role="progressbar" aria-label="Progresso da apresentação">
+          <span class="hud__progress-segment is-active" data-slide-target="0" title="Slide 1: Capa & VoiceParty"></span>
+          <span class="hud__progress-segment" data-slide-target="1" title="Slide 2: Aprendizado Supervisionado"></span>
+          <span class="hud__progress-segment" data-slide-target="2" title="Slide 3: O que é Rede Neural"></span>
+          <span class="hud__progress-segment" data-slide-target="3" title="Slide 4: STFT, Espectrograma e MFCCs"></span>
+          <span class="hud__progress-target" style="display:none;"></span>
+          <span class="hud__progress-segment" data-slide-target="4" title="Slide 5: Coleta e Librosa"></span>
+          <span class="hud__progress-segment" data-slide-target="5" title="Slide 6: Criação e Treino do Modelo"></span>
+          <span class="hud__progress-segment" data-slide-target="6" title="Slide 7: Tipos de Redes: CNN vs RNN"></span>
+          <span class="hud__progress-segment" data-slide-target="7" title="Slide 8: Acertos, Erros e Reflexão"></span>
+        </div>
+      </div>
+
+      <!-- Direita: Botões de Ação e Atalhos -->
+      <div class="hud__right">
+        <button class="hud__btn hud__btn--nav" id="hud-btn-prev" title="Slide Anterior (←)">‹</button>
+        <button class="hud__btn hud__btn--nav" id="hud-btn-next" title="Próximo Slide (→)">›</button>
+        <button class="hud__btn" id="hud-btn-notes" title="Abrir Notas do Apresentador (N)"><kbd>N</kbd> Notas</button>
+        <button class="hud__btn" id="hud-btn-fs" title="Tela Cheia (F)"><kbd>F</kbd></button>
+        <button class="hud__btn" id="hud-btn-help" title="Ajuda & Atalhos (H)"><kbd>H</kbd></button>
+      </div>
+    </nav>
+  </div>
+
+
+  <!-- ======================================================================
+       MODAL DE NOTAS DO APRESENTADOR ('N')
+       Com isolamento de eventos contra saltos acidentais de slide
+       ====================================================================== -->
+  <aside class="notes-modal" aria-label="Notas do orador" tabindex="0">
+    <div class="notes-modal__header">
+      <div class="notes-modal__badge">
+        <span>🎙️</span> COLA DO APRESENTADOR · SLIDE <span id="notes-slide-num">01</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: calc(var(--u) * 0.8);">
+        <span class="notes-modal__time" id="notes-time">⏱️ 01:00 min</span>
+        <button class="notes-modal__close" id="notes-close-btn" title="Fechar (N ou Esc)">✕</button>
+      </div>
+    </div>
+
+    <div class="notes-modal__body">
+      <!-- Roteiro Falado Verbatim -->
+      <div class="notes-section">
+        <div class="notes-section__title">
+          <span>🗣️</span> O que falar para a turma (Roteiro Simples)
+        </div>
+        <div class="notes-speech" id="notes-speech-body">
+          <!-- Injetado dinamicamente via NotesData -->
+        </div>
+      </div>
+
+      <!-- Destaques Pedagógicos -->
+      <div class="notes-section">
+        <div class="notes-section__title">
+          <span>📌</span> Pontos-Chave para Lembrar
+        </div>
+        <ul class="notes-bullets" id="notes-bullets-list">
+          <!-- Injetado dinamicamente via NotesData -->
+        </ul>
+      </div>
+
+      <!-- Perguntas da Banca e Respostas Preparadas -->
+      <div class="notes-section">
+        <div class="notes-section__title">
+          <span>🙋</span> Perguntas que a Professora Pode Fazer & Respostas
+        </div>
+        <div class="notes-qa" id="notes-qa-container">
+          <!-- Injetado dinamicamente via NotesData -->
+        </div>
+      </div>
+    </div>
+
+    <div class="notes-modal__footer">
+      <span>Dica: Role este painel com o mouse ou setas sem mudar o slide</span>
+      <span>Aperte <kbd>N</kbd> ou <kbd>Esc</kbd> para fechar</span>
+    </div>
+  </aside>
+
+
+  <!-- ======================================================================
+       MODAL DE AJUDA & ATALHOS DE TECLADO ('H' ou '?')
+       ====================================================================== -->
+  <div class="help-modal" aria-label="Atalhos de teclado">
+    <div class="help-modal__card">
+      <div class="help-modal__header">
+        <h3 class="help-modal__title">Atalhos de Teclado</h3>
+        <button class="help-modal__close-btn" id="help-close-btn" title="Fechar">✕</button>
+      </div>
+
+      <div class="help-modal__grid">
+        <div class="help-modal__item">
+          <span class="help-modal__desc">Próximo Slide</span>
+          <div><kbd>→</kbd> <kbd>Espaço</kbd> <kbd>Enter</kbd></div>
+        </div>
+        <div class="help-modal__item">
+          <span class="help-modal__desc">Slide Anterior</span>
+          <div><kbd>←</kbd> <kbd>Backspace</kbd></div>
+        </div>
+        <div class="help-modal__item">
+          <span class="help-modal__desc">Primeiro Slide</span>
+          <kbd>Home</kbd>
+        </div>
+        <div class="help-modal__item">
+          <span class="help-modal__desc">Último Slide</span>
+          <kbd>End</kbd>
+        </div>
+        <div class="help-modal__item">
+          <span class="help-modal__desc">Cola do Apresentador</span>
+          <kbd>N</kbd>
+        </div>
+        <div class="help-modal__item">
+          <span class="help-modal__desc">Alternar Tela Cheia</span>
+          <kbd>F</kbd>
+        </div>
+        <div class="help-modal__item">
+          <span class="help-modal__desc">Ajuda / Atalhos</span>
+          <kbd>H</kbd> ou <kbd>?</kbd>
+        </div>
+        <div class="help-modal__item">
+          <span class="help-modal__desc">Fechar Janelas</span>
+          <kbd>Esc</kbd>
+        </div>
+      </div>
+
+      <div class="help-modal__footer">
+        Colégio FECAP · Sistema de Reconhecimento de Voz & VoiceParty · 100% Offline
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======================================================================
+       SCRIPTS (Carregados na Ordem Correta com Caminhos 100% Relativos)
+       ====================================================================== -->
+  <!-- 1. Three.js r128 Standalone Local (0 Dependências de Rede) -->
+  <script src="./js/three.min.js"></script>
+
+  <!-- 2. Motor 3D de Fundo (Malha Acústica e Orbe Neural) -->
+  <script src="./js/background3d.js"></script>
+
+  <!-- 3. Banco de Dados das Notas do Orador -->
+  <script src="./js/notes-data.js"></script>
+
+  <!-- 4. Aplicação Principal e Roteador de Slides -->
+  <script src="./js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" width="100%" height="100%" style="background: transparent;">
+  <defs>
+    <filter id="glow-red" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <linearGradient id="grad-card" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0c1328" />
+      <stop offset="100%" stop-color="#060914" />
+    </linearGradient>
+  </defs>
+
+  <style>
+    .title { font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; fill: #eef3ff; }
+    .subtitle { font-family: 'JetBrains Mono Variable', 'JetBrains Mono', monospace; font-size: 13px; fill: #ffb347; letter-spacing: 0.12em; text-transform: uppercase; }
+    .card-title { font-family: 'Inter Variable', 'Inter', sans-serif; font-size: 17px; font-weight: 700; fill: #eef3ff; }
+    .math { font-family: 'JetBrains Mono Variable', 'JetBrains Mono', monospace; font-size: 14px; fill: #e2eaff; }
+    .label { font-family: 'Inter Variable', 'Inter', sans-serif; font-size: 12px; fill: #94a3b8; }
+    .axis { stroke: #334155; stroke-width: 1.2; }
+    .grid { stroke: #1e293b; stroke-width: 0.8; stroke-dasharray: 2 2; }
+    .box-subcard { fill: url(#grad-card); stroke: #ffffff1a; stroke-width: 1.2; rx: 12; }
+  </style>
+
+  <!-- Fundo Principal -->
+  <rect x="15" y="15" width="970" height="510" rx="16" fill="#040712cc" stroke="#ffffff1f" stroke-width="1.5" />
+
+  <!-- Cabeçalho -->
+  <text x="45" y="55" class="subtitle">Não-Linearidades &amp; Dinâmica de Gradientes em Deep Learning</text>
+  <text x="45" y="88" class="title">Por que a LeakyReLU previne o "Dying ReLU" em Espectrogramas de Áudio?</text>
+
+  <!-- ================= CARD 1: ReLU TRADICIONAL ================= -->
+  <rect x="45" y="115" width="280" height="280" class="box-subcard" />
+  <text x="65" y="145" class="card-title">1. ReLU Clássica</text>
+  <text x="65" y="165" class="math" font-size="12px" fill="#4aa8ff">f(z) = max(0, z)</text>
+
+  <!-- Gráfico Cartesiano ReLU (Centro: 185, 270) -->
+  <g transform="translate(185, 270)">
+    <line x1="-110" y1="0" x2="110" y2="0" class="axis" />
+    <line x1="0" y1="-80" x2="0" y2="80" class="axis" />
+    <text x="105" y="15" class="label">z</text>
+    <text x="10" y="-75" class="label">f(z)</text>
+
+    <!-- Zona Morta (z &lt; 0) -->
+    <rect x="-105" y="0" width="105" height="40" fill="#ef444415" />
+    <line x1="-105" y1="0" x2="0" y2="0" stroke="#ef4444" stroke-width="3.5" filter="url(#glow-red)" />
+    <!-- Zona Ativa (z &gt;= 0) -->
+    <line x1="0" y1="0" x2="80" y2="-80" stroke="#4aa8ff" stroke-width="3" />
+
+    <!-- Alerta de Gradiente Zero -->
+    <circle cx="-50" cy="0" r="4" fill="#ef4444" />
+    <text x="-50" y="32" text-anchor="middle" class="math" font-size="11px" fill="#f87171">df/dz = 0 !</text>
+  </g>
+  <rect x="60" y="340" width="250" height="42" rx="6" fill="#1c0b0bcc" stroke="#ef444444" />
+  <text x="185" y="358" text-anchor="middle" class="label" fill="#fca5a5" font-weight="600">🚨 Problema: "Dying ReLU"</text>
+  <text x="185" y="374" text-anchor="middle" class="label" font-size="11px" fill="#e2eaff99">Neurônio trava em 0 para sons fracos</text>
+
+
+  <!-- ================= CARD 2: LEAKY RELU (ADOTADA NO VOICEPARTY) ================= -->
+  <rect x="360" y="115" width="280" height="280" class="box-subcard" stroke="#ffb347" stroke-width="1.8" />
+  <rect x="360" y="115" width="280" height="32" rx="12" fill="#ffb34722" />
+  <text x="380" y="137" class="subtitle" font-size="11px" fill="#ffd66b">★ ARQUITETURA VOICEPARTY</text>
+  <text x="380" y="165" class="card-title" fill="#ffd66b">2. LeakyReLU (α = 0.1)</text>
+  <text x="380" y="185" class="math" font-size="12px" fill="#ffb347">f(z) = max(0.1z, z)</text>
+
+  <!-- Gráfico Cartesiano LeakyReLU (Centro: 500, 275) -->
+  <g transform="translate(500, 275)">
+    <line x1="-110" y1="0" x2="110" y2="0" class="axis" />
+    <line x1="0" y1="-80" x2="0" y2="80" class="axis" />
+    <text x="105" y="15" class="label">z</text>
+    <text x="10" y="-75" class="label">f(z)</text>
+
+    <!-- Zona com Vazamento Ativo (z &lt; 0, inclinação 0.1) -->
+    <rect x="-105" y="0" width="105" height="40" fill="#10b98115" />
+    <line x1="-105" y1="10.5" x2="0" y2="0" stroke="#10b981" stroke-width="3" filter="url(#glow-green)" />
+    <!-- Zona Ativa (z &gt;= 0) -->
+    <line x1="0" y1="0" x2="75" y2="-75" stroke="#ffb347" stroke-width="3" />
+
+    <!-- Gradiente Preservado -->
+    <circle cx="-50" cy="5" r="4" fill="#10b981" />
+    <text x="-50" y="32" text-anchor="middle" class="math" font-size="11px" fill="#6ee7b7">df/dz = 0.10 ✓</text>
+  </g>
+  <rect x="375" y="340" width="250" height="42" rx="6" fill="#041f17cc" stroke="#10b98155" />
+  <text x="500" y="358" text-anchor="middle" class="label" fill="#6ee7b7" font-weight="600">✓ Gradiente Vivo Permanente</text>
+  <text x="500" y="374" text-anchor="middle" class="label" font-size="11px" fill="#e2eaff99">Preserva nuances de baixa energia</text>
+
+
+  <!-- ================= CARD 3: SIGMOID ================= -->
+  <rect x="675" y="115" width="280" height="280" class="box-subcard" />
+  <text x="695" y="145" class="card-title">3. Sigmoid Clássica</text>
+  <text x="695" y="165" class="math" font-size="12px" fill="#a855f7">σ(z) = 1 / (1 + e⁻ᶻ)</text>
+
+  <!-- Gráfico Cartesiano Sigmoid (Centro: 815, 270) -->
+  <g transform="translate(815, 270)">
+    <line x1="-110" y1="0" x2="110" y2="0" class="axis" />
+    <line x1="0" y1="-80" x2="0" y2="80" class="axis" />
+    <text x="105" y="15" class="label">z</text>
+    <text x="10" y="-75" class="label">σ(z)</text>
+
+    <!-- Linhas Assintóticas em 0 e 1 -->
+    <line x1="-105" y1="-50" x2="105" y2="-50" stroke="#ffffff22" stroke-dasharray="2 2" />
+    <text x="-105" y="-55" class="math" font-size="10px" fill="#94a3b8">1.0</text>
+    <text x="-105" y="15" class="math" font-size="10px" fill="#94a3b8">0.0</text>
+
+    <!-- Curva Sigmoid em 'S' -->
+    <path d="M -100 -2 C -40 -2, -20 -25, 0 -25 C 20 -25, 40 -48, 100 -48" stroke="#c084fc" stroke-width="3" fill="none" />
+
+    <!-- Saturação nos Extremos -->
+    <text x="-65" y="28" text-anchor="middle" class="math" font-size="10px" fill="#f87171">df/dz ≈ 0</text>
+    <text x="65" y="-60" text-anchor="middle" class="math" font-size="10px" fill="#f87171">df/dz ≈ 0</text>
+  </g>
+  <rect x="690" y="340" width="250" height="42" rx="6" fill="#1e102acc" stroke="#c084fc44" />
+  <text x="815" y="358" text-anchor="middle" class="label" fill="#e9d5ff" font-weight="600">⚠️ Desvanecimento de Gradiente</text>
+  <text x="815" y="374" text-anchor="middle" class="label" font-size="11px" fill="#e2eaff99">Saturação em valores |z| altos</text>
+
+
+  <!-- ================= BANNER INFORMATIVO INFERIOR ================= -->
+  <rect x="45" y="415" width="910" height="90" rx="12" fill="#080e22" stroke="#4aa8ff44" stroke-width="1.2" />
+  <text x="70" y="445" class="subtitle" font-size="12px" fill="#4aa8ff">FUNDAMENTO ACÚSTICO CRÍTICO PARA BANCA EXAMINADORA:</text>
+  <text x="70" y="470" class="label" font-size="13px" fill="#e2eaff">
+    Em espectrogramas <tspan fill="#ffd66b" font-weight="600">Log-Mel normalizados em dB</tspan>, pausas fonéticas e harmônicos fracos geram tensores predominantemente negativos.
+  </text>
+  <text x="70" y="492" class="label" font-size="13px" fill="#e2eaff">
+    Com a ReLU padrão, até <tspan fill="#f87171" font-weight="600">40% dos filtros convolucionais morriam permanentemente</tspan>. A adoção de <tspan fill="#6ee7b7" font-weight="600">LeakyReLU(0.1)</tspan> garantiu aprendizado contínuo da textura tímbrica.
+  </text>
+</svg>

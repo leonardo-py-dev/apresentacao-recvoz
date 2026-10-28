@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 340" width="100%" height="100%" style="background: transparent;">
+  <defs>
+    <linearGradient id="grad-input" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#13203d" />
+      <stop offset="100%" stop-color="#091124" />
+    </linearGradient>
+    <linearGradient id="grad-neuron" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e1e40" />
+      <stop offset="100%" stop-color="#071026" />
+    </linearGradient>
+    <linearGradient id="grad-output" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#291d07" />
+      <stop offset="100%" stop-color="#140d02" />
+    </linearGradient>
+
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#4aa8ff" />
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#ffb347" />
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: 'Inter', system-ui, sans-serif; font-size: 23px; font-weight: 800; fill: #f8fafc; }
+    .math { font-family: 'JetBrains Mono', monospace; font-size: 21px; font-weight: 700; }
+    .sub-math { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; }
+    .label { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; font-weight: 600; fill: #cbd5e1; }
+    .badge-text { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; }
+  </style>
+
+  <!-- Container de Fundo -->
+  <rect x="8" y="8" width="904" height="324" rx="18" fill="#060b1acc" stroke="#ffffff1f" stroke-width="2" />
+
+  <!-- ======================================================================
+       LINHA SUPERIOR: ENTRADA X (0.5) -> PESO 1 (2.0) -> NEURÔNIO
+       ====================================================================== -->
+  <!-- Linha Entrada X até Peso 1 -->
+  <line x1="210" y1="95" x2="246" y2="95" stroke="#4aa8ff" stroke-width="3.5" />
+  <!-- Curva Suave Peso 1 até Neurônio -->
+  <path d="M 410 95 C 445 95, 450 135, 480 148" stroke="#4aa8ff" stroke-width="3.5" fill="none" marker-end="url(#arrow-blue)" />
+
+  <!-- Card Entrada X -->
+  <rect x="28" y="48" width="182" height="94" rx="14" fill="url(#grad-input)" stroke="#4aa8ff" stroke-width="2.5" />
+  <text x="119" y="86" text-anchor="middle" class="math" fill="#4aa8ff">X = 0.5</text>
+  <text x="119" y="116" text-anchor="middle" class="label">Dica A (Muito útil)</text>
+
+  <!-- Pílula Peso 1 (Alinhada no meio da linha superior) -->
+  <rect x="246" y="69" width="164" height="52" rx="12" fill="#091936" stroke="#9be7d8" stroke-width="2" />
+  <text x="328" y="101" text-anchor="middle" class="badge-text" fill="#9be7d8">Peso = 2.0 ✅</text>
+
+
+  <!-- ======================================================================
+       LINHA INFERIOR: ENTRADA Y (1.0) -> PESO 2 (0.1) -> NEURÔNIO
+       ====================================================================== -->
+  <!-- Linha Entrada Y até Peso 2 -->
+  <line x1="210" y1="245" x2="246" y2="245" stroke="#4aa8ff" stroke-width="3.5" />
+  <!-- Curva Suave Peso 2 até Neurônio -->
+  <path d="M 410 245 C 445 245, 450 205, 480 192" stroke="#4aa8ff" stroke-width="3.5" fill="none" marker-end="url(#arrow-blue)" />
+
+  <!-- Card Entrada Y -->
+  <rect x="28" y="198" width="182" height="94" rx="14" fill="url(#grad-input)" stroke="#4aa8ff" stroke-width="2.5" />
+  <text x="119" y="236" text-anchor="middle" class="math" fill="#4aa8ff">Y = 1.0</text>
+  <text x="119" y="266" text-anchor="middle" class="label">Dica B (Pouco útil)</text>
+
+  <!-- Pílula Peso 2 (Alinhada no meio da linha inferior) -->
+  <rect x="246" y="219" width="164" height="52" rx="12" fill="#1c1608" stroke="#ffb347" stroke-width="2" />
+  <text x="328" y="251" text-anchor="middle" class="badge-text" fill="#ffb347">Peso = 0.1 🤷</text>
+
+
+  <!-- ======================================================================
+       CENTRO: NEURÔNIO (CÁPSULA LARGA SEM CORTAR TEXTO)
+       ====================================================================== -->
+  <rect x="488" y="88" width="214" height="164" rx="28" fill="url(#grad-neuron)" stroke="#4aa8ff" stroke-width="3.5" />
+  <text x="595" y="136" text-anchor="middle" class="title">Neurônio</text>
+  <text x="595" y="168" text-anchor="middle" class="label" fill="#9be7d8">Multiplica e Soma</text>
+  <rect x="504" y="186" width="182" height="42" rx="8" fill="#050b18" stroke="#ffffff1a" stroke-width="1.5" />
+  <text x="595" y="212" text-anchor="middle" class="sub-math" fill="#ffb347">(0.5×2) + (1.0×0.1)</text>
+
+
+  <!-- ======================================================================
+       DIREITA: SETA E CARD DE SAÍDA FINAL (1.1)
+       ====================================================================== -->
+  <line x1="702" y1="170" x2="742" y2="170" stroke="#ffb347" stroke-width="4" marker-end="url(#arrow-amber)" />
+
+  <rect x="750" y="102" width="140" height="136" rx="16" fill="url(#grad-output)" stroke="#ffb347" stroke-width="3" />
+  <text x="820" y="148" text-anchor="middle" class="label" fill="#fde047">Saída Final</text>
+  <text x="820" y="198" text-anchor="middle" class="math" font-size="34px" fill="#ffb347">1.1</text>
+</svg>
